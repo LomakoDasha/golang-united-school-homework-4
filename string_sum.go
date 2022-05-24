@@ -2,24 +2,46 @@ package string_sum
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 var (
-	// Use when the input is empty, and input is considered empty if the string contains only whitespace
-	errorEmptyInput = errors.New("input is empty")
-	// Use when the expression has number of operands not equal to two
+	errorEmptyInput     = errors.New("input is empty")
 	errorNotTwoOperands = errors.New("expecting two operands, but received more or less")
 )
 
+func main() {
+	StringSum("  ")
+}
+
 func StringSum(input string) (output string, err error) {
 	var summ = 0
-	re := regexp.MustCompile(`[-]?\d[\d,]*[\.]?[\d{2}]*`)
-	arrOfDigits := re.FindAllString(input, -1)
-	for _, elem := range arrOfDigits {
-		value, _ := strconv.Atoi(elem)
-		summ += value
+	var emptyInputCustomError = fmt.Errorf(errorEmptyInput.Error())
+	var wrongOperandsAmountCustomError = fmt.Errorf(errorNotTwoOperands.Error())
+	cleanString := strings.TrimSpace(input)
+
+	if len(cleanString) == 0 {
+		return "", emptyInputCustomError
 	}
-	return string(summ), nil
+
+	re := regexp.MustCompile(`[-]?\d[\d,]*[\.]?[\d{2}]*`)
+	arrOfDigits := re.FindAllString(cleanString, -1)
+
+	if len(arrOfDigits) != 2 {
+		return "", wrongOperandsAmountCustomError
+	} else {
+		for _, elem := range arrOfDigits {
+			value, err := strconv.Atoi(elem)
+			error := fmt.Errorf("Incorrect operand %w", err)
+			if err != nil {
+				return "", error
+			}
+			summ += value
+		}
+	}
+
+	return strconv.Itoa(summ), nil
 }
