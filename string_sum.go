@@ -23,12 +23,14 @@ func StringSum(input string) (output string, err error) {
 		return "", emptyInputCustomError
 	}
 
-	charactersRegexp := regexp.MustCompile(`[a-z]`)
+	charactersRegexp := regexp.MustCompile(`[a-zA-Zа-яА-Я]`)
 	arrOfCharacters := charactersRegexp.FindAllString(cleanString, -1)
 	if len(arrOfCharacters) != 0 {
 		_, err := strconv.Atoi(arrOfCharacters[0])
-		letterExistError := fmt.Errorf("Letter exist %w", err.(*strconv.NumError).Err)
-		return "", letterExistError
+		letterExistError := fmt.Errorf("Letter exist in the string %w", err)
+		if err != nil {
+			return "", letterExistError
+		}
 	}
 
 	digitsRegexp := regexp.MustCompile(`[-]?\d[\d,]*[\.]?[\d{2}]*`)
