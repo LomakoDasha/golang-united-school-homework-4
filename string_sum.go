@@ -23,8 +23,16 @@ func StringSum(input string) (output string, err error) {
 		return "", emptyInputCustomError
 	}
 
-	re := regexp.MustCompile(`[-]?\d[\d,]*[\.]?[\d{2}]*`)
-	arrOfDigits := re.FindAllString(cleanString, -1)
+	charactersRegexp := regexp.MustCompile(`[a-z]`)
+	arrOfCharacters := charactersRegexp.FindAllString(cleanString, -1)
+	if len(arrOfCharacters) != 0 {
+		_, err := strconv.Atoi(arrOfCharacters[0])
+		letterExistError := fmt.Errorf("Letter exist %w", err.(*strconv.NumError).Err)
+		return "", letterExistError
+	}
+
+	digitsRegexp := regexp.MustCompile(`[-]?\d[\d,]*[\.]?[\d{2}]*`)
+	arrOfDigits := digitsRegexp.FindAllString(cleanString, -1)
 
 	if len(arrOfDigits) != 2 {
 		return "", wrongOperandsAmountCustomError
