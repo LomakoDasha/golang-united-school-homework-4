@@ -15,8 +15,8 @@ var (
 
 func StringSum(input string) (output string, err error) {
 	var summ = 0
-	var emptyInputCustomError = fmt.Errorf(errorEmptyInput.Error())
-	var wrongOperandsAmountCustomError = fmt.Errorf(errorNotTwoOperands.Error())
+	var emptyInputCustomError = fmt.Errorf("Error of empty input: %w", errorEmptyInput)
+	var wrongOperandsAmountCustomError = fmt.Errorf("Error of more or less than two operands: %w", errorNotTwoOperands)
 	cleanString := strings.TrimSpace(input)
 
 	if len(cleanString) == 0 {
