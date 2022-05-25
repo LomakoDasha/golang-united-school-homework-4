@@ -13,10 +13,6 @@ var (
 	errorNotTwoOperands = errors.New("expecting two operands, but received more or less")
 )
 
-func main() {
-	StringSum("  ")
-}
-
 func StringSum(input string) (output string, err error) {
 	var summ = 0
 	var emptyInputCustomError = fmt.Errorf(errorEmptyInput.Error())
